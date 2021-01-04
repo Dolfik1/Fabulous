@@ -4,13 +4,6 @@ namespace Fabulous
 open System
 open System.Diagnostics
 
-/// Representation of the host framework with access to the root view to update (e.g. Xamarin.Forms.Application)
-type IHost =
-    /// Gets a reference to the root view item (e.g. Xamarin.Forms.Application.MainPage)
-    abstract member GetRootView : unit -> obj
-    /// Sets a new instance of the root view item (e.g. Xamarin.Forms.Application.MainPage)
-    abstract member SetRootView : obj -> unit
-
 /// We store the current dispatch function for the running Elmish program as a 
 /// static-global thunk because we want old view elements stored in the `dependsOn` global table
 /// to be recyclable on resumption (when a new ProgramRunner gets created).
@@ -53,7 +46,7 @@ type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'mode
     // If the view is dynamic, create the initial page
     let viewInfo = 
         let newRootElement = program.view initialModel dispatch
-        let rootView = newRootElement.Create()
+        let rootView = newRootElement.Create(host)
         host.SetRootView(rootView)
         newRootElement
 
@@ -90,7 +83,7 @@ type ProgramRunner<'arg, 'model, 'msg>(host: IHost, program: Program<'arg, 'mode
                 let rootView = host.GetRootView()
                 newPageElement.UpdateIncremental (prevPageElement, rootView)
             else
-                let pageObj = newPageElement.Create()
+                let pageObj = newPageElement.Create(host)
                 host.SetRootView(pageObj)
 
             lastViewDataOpt <- Some newPageElement

@@ -89,12 +89,12 @@ module CodeGenerator =
         match data with
         | None -> w
         | Some data ->
-            w.printfn "    static member Create%s () : %s =" data.Name data.FullName
+            w.printfn "    static member Create%s (host: IHost) : %s =" data.Name data.FullName
             
             if data.TypeToInstantiate = data.FullName then
-                w.printfn "        %s()" data.TypeToInstantiate
+                w.printfn "        %s((host :?> IAndroidHost).Context)" data.TypeToInstantiate
             else
-                w.printfn "        upcast (%s())" data.TypeToInstantiate
+                w.printfn "        upcast (%s((host :?> IAndroidHost).Context))" data.TypeToInstantiate
             
             w.printfn ""
             w

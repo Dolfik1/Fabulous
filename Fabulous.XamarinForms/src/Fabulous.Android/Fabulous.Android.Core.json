@@ -1,0 +1,86 @@
+{
+  "assemblies": [
+    "Fabulous.XamarinForms/src/Fabulous.Android/Mono.Android.dll"
+  ],
+  "outputNamespace": "Fabulous.Android",
+  "types": [
+    {
+      "type": "Android.Views.View",
+      "canBeInstantiated": true,
+      "properties": [
+        {
+          "source": null,
+          "name": "Ref",
+          "canBeUpdated": false,
+          "customAttributeKey": "Fabulous.ViewElement.RefAttribKey",
+          "defaultValue": "null",
+          "inputType": "ViewRef"
+        },
+        {
+          "source": null,
+          "name": "Key",
+          "canBeUpdated": false,
+          "customAttributeKey": "Fabulous.ViewElement.KeyAttribKey",
+          "inputType": "string",
+          "defaultValue": "null"
+        }
+      ],
+      "events": [
+        {
+          "source": null,
+          "name": "Created",
+          "canBeUpdated": false,
+          "customAttributeKey": "Fabulous.ViewElement.CreatedAttribKey",
+          "inputType": "obj -> unit",
+          "modelType": "obj -> unit"
+        },
+        {
+          "source": "Click"
+        }
+      ]
+    },
+    {
+      "type": "Android.Views.ViewGroup",
+      "canBeInstantiated": false,
+      "properties": [
+        {
+          "source": "Children",
+          "inputType": "ViewElement list",
+          "collection": {
+            "elementType": "'T"
+          }
+        },
+        {
+          "source": null,
+          "name": "Children",
+          "inputType": "ViewElement list",
+          "updateCode": "Collections.updateViewGroupChildren",
+          "collection": {
+            "elementType": "Android.Views.View"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Android.Widget.TextView",
+      "properties": [
+        {
+          "source": "Text",
+          "defaultValue": "null"
+        }
+      ]
+    },
+    {
+      "type": "Android.Widget.LinearLayout",
+      "properties": [
+        
+      ]
+    },
+    {
+      "type": "Android.Widget.Button",
+      "properties": [
+        
+      ]
+    }
+  ]
+}
