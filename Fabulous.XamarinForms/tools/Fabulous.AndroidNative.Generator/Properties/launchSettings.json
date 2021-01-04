@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Generator (Xamarin.AndroidNative)": {
+      "commandName": "Project",
+      "commandLineArgs": "-m Fabulous.XamarinForms/src/Fabulous.Android/Xamarin.Android.Core.json -o Fabulous.XamarinForms/src/Fabulous.XamarinForms/Xamarin.Android.Core.fs -d",
+      "workingDirectory": "/Users/timothelariviere/Git/GitHub/fabulous"
+    }
+  }
+}

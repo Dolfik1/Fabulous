@@ -11,6 +11,7 @@ open Fabulous.CodeGen.Binder.Models
 open Fabulous.CodeGen.Generator
 open Fabulous.CodeGen.Models
 open Fabulous.CodeGen.Generator.Models
+open Mono.Cecil
 
 type Configuration =
     { /// The base type full name from which all UI controls inherit from (e.g. Xamarin.Forms.Element)
@@ -21,7 +22,7 @@ type Configuration =
     
 type ReadAssembliesConfiguration =
     { loadAllAssembliesByReflection: seq<string> -> Assembly array
-      tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option
+      tryGetAttachedPropertyByReflection: AssemblyDefinition array -> string * string -> Models.ReflectionAttachedProperty option
       isTypeResolvable: string -> bool
       convertTypeName: string -> string
       tryGetStringRepresentationOfDefaultValue: obj -> string option }

@@ -111,7 +111,7 @@ module Reader =
         
         { FullName = tdef.FullName
           AssemblyName = tdef.Module.Assembly.Name.Name
-          CanBeInstantiated = not tdef.IsAbstract && ctor.IsSome && ctor.Value.Parameters.Count = 0
+          CanBeInstantiated = not tdef.IsAbstract && ctor.IsSome // && ctor.Value.Parameters.Count = 0
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
           Events = readEventsFromType convertTypeName tdef
           AttachedProperties = readAttachedPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
@@ -119,7 +119,7 @@ module Reader =
         
     let readAssemblies
             (loadAllAssembliesByReflection: seq<string> -> Assembly array)
-            (tryGetAttachedPropertyByReflection: Assembly array -> string * string -> Models.ReflectionAttachedProperty option)
+            (tryGetAttachedPropertyByReflection: AssemblyDefinition array -> string * string -> Models.ReflectionAttachedProperty option)
             (isTypeResolvable: string -> bool)
             (convertTypeName: string -> string)
             (tryGetStringRepresentationOfDefaultValue: obj -> string option)
@@ -133,7 +133,7 @@ module Reader =
         let allTypes = Resolver.getAllTypesFromAssemblies cecilAssemblies
         let allTypesDerivingFromBaseType = Resolver.getAllTypesDerivingFromBaseType isTypeResolvable allTypes baseTypeName
         
-        let tryGetProperty = tryGetAttachedPropertyByReflection assemblies
+        let tryGetProperty = tryGetAttachedPropertyByReflection cecilAssemblies
         
         let data =
             allTypesDerivingFromBaseType
