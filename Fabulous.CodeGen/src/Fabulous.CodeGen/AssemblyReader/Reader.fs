@@ -96,6 +96,16 @@ module Reader =
 
         Array.concat [ settableProperties; listPropertiesWithNoSetter ]
 
+    let readTypeConstructorsParameters (``type``: TypeDefinition) =
+        ``type``.Methods
+         |> Seq.filter (fun x -> x.IsConstructor && x.IsPublic)
+         |> Seq.map (fun x ->
+             x.Parameters
+             |> Seq.map (fun x -> x.ParameterType.FullName)
+             |> Array.ofSeq)
+         |> Array.ofSeq
+        
+    
     let readType
             (convertTypeName: string -> string)
             (tryGetStringRepresentationOfDefaultValue: obj -> string option)
@@ -103,6 +113,7 @@ module Reader =
             (propertyBaseType: string)
             (baseTypeName: string)
             (tdef: TypeDefinition) =
+        
         let ctor =
             tdef.Methods
              |> Seq.filter (fun x -> x.IsConstructor && x.IsPublic)
@@ -111,10 +122,11 @@ module Reader =
         
         { FullName = tdef.FullName
           AssemblyName = tdef.Module.Assembly.Name.Name
-          CanBeInstantiated = not tdef.IsAbstract && ctor.IsSome && ctor.Value.Parameters.Count = 0
+          CanBeInstantiated = not tdef.IsAbstract && ctor.IsSome
           InheritanceHierarchy = Resolver.getHierarchyForType baseTypeName tdef 
           Events = readEventsFromType convertTypeName tdef
           AttachedProperties = readAttachedPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty propertyBaseType tdef
+          ConstructorsParameters = readTypeConstructorsParameters tdef
           Properties = readPropertiesFromType convertTypeName tryGetStringRepresentationOfDefaultValue tryGetProperty tdef }
         
     let readAssemblies

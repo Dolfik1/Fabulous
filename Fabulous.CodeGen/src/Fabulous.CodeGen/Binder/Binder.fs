@@ -272,11 +272,18 @@ module Binder =
     /// Bind an existing type
     let bindType logger (assemblyType: AssemblyType) shouldGenerateBindingForType (bindingsType: Type) =
         let typeName = BinderHelpers.getTypeName assemblyType.FullName bindingsType.Name
+        let constructorParameters =
+            assemblyType.ConstructorsParameters
+            |> Array.tryFind (fun x -> bindingsType.ConstructorParameters = x)
+        
         { Id = assemblyType.FullName
           FullName = assemblyType.FullName
           ShouldGenerateBinding = shouldGenerateBindingForType
           GenericConstraint = bindingsType.GenericConstraint
-          CanBeInstantiated = bindingsType.CanBeInstantiated |> Option.defaultValue assemblyType.CanBeInstantiated
+          CanBeInstantiated =
+              constructorParameters.IsSome
+              && bindingsType.CanBeInstantiated |> Option.defaultValue assemblyType.CanBeInstantiated
+          ConstructorParameters = constructorParameters |> Option.defaultValue Array.empty
           TypeToInstantiate = Text.getValueOrDefault bindingsType.CustomType assemblyType.FullName
           BaseTypeName = None
           BaseGenericConstraint = bindingsType.BaseGenericConstraint

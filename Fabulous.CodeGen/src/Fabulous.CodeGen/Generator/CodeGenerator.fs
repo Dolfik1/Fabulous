@@ -89,12 +89,28 @@ module CodeGenerator =
         match data with
         | None -> w
         | Some data ->
-            w.printfn "    static member Create%s () : %s =" data.Name data.FullName
+            let parameters =
+                data.ConstructorParameters
+                |> Seq.ofArray
+                |> Seq.map (fun typeName ->
+                    sprintf "%s: %s"
+                        (typeName |> Text.getTypeNameFromFullName |> Text.toLowerPascalCase)
+                        typeName)
+                |> String.concat ", "
+                
+            let arguments =
+                data.ConstructorParameters
+                |> Seq.ofArray
+                |> Seq.map (Text.getTypeNameFromFullName >> Text.toLowerPascalCase)
+                |> String.concat ", "
+                        
+                
+            w.printfn "    static member Create%s (%s) : %s =" data.Name parameters data.FullName
             
             if data.TypeToInstantiate = data.FullName then
-                w.printfn "        %s()" data.TypeToInstantiate
+                w.printfn "        %s(%s)" data.TypeToInstantiate arguments
             else
-                w.printfn "        upcast (%s())" data.TypeToInstantiate
+                w.printfn "        upcast (%s(%s))" data.TypeToInstantiate arguments
             
             w.printfn ""
             w

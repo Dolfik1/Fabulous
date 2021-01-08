@@ -46,4 +46,8 @@ module Text =
         match str with
         | null -> null
         | x -> Regex.Replace(x, "`[0-9]*<",  "<")
-        
+   
+    let getTypeNameFromFullName (str : string) =
+        match str.LastIndexOf(".") with
+        | -1 -> str
+        | idx -> str.Substring(idx + 1)

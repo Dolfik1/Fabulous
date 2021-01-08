@@ -98,6 +98,7 @@ module Models =
           ShouldGenerateBinding: bool
           GenericConstraint: string option
           CanBeInstantiated: bool
+          ConstructorParameters: string[]
           TypeToInstantiate: string
           BaseTypeName: string option
           BaseGenericConstraint: string option

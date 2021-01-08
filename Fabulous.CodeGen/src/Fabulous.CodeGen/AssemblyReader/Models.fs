@@ -59,6 +59,9 @@ module Models =
           /// The extracted properties
           Properties: AssemblyTypeProperty array
           
+          /// The constructor parameters to be used to instantiate the type
+          ConstructorsParameters: string[][]
+          
           /// The extracted attached properties
           AttachedProperties: AssemblyTypeAttachedProperty array }
         

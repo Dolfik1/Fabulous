@@ -116,6 +116,9 @@ module Models =
         /// Indicates if this type can be instantiated by itself and if the generator should provide a public constructor for it
         member val CanBeInstantiated: bool option = None with get, set
 
+        /// The constructor parameters to be used to instantiate the type (used to pass context in Android projects)
+        member val ConstructorParameters: string[] = Array.empty with get, set
+
         /// The name of the type as used inside Fabulous (e.g. MyWonderfulButton => View.MyWonderfulButton(...))
         member val Name: string option = None with get, set
         
